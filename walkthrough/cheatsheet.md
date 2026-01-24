@@ -31,6 +31,6 @@ sudo apt-get install -y mssql-tools18 unixodbc-dev
 ### Creating QR Code
 import qrcode
 
-payload = "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"  
+payload = "sk-proj-c3O0rwA45Ghl0..."  
 img = qrcode.make(payload)
 img.save("test/qr/class-qr.png")
