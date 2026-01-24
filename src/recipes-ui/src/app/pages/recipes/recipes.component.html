@@ -1,0 +1,53 @@
+<div class="container">
+    <div class="form-title">
+        <h2>Recipes</h2>
+        <p>Browse and manage your saved recipes.</p>
+    </div>
+
+    <div *ngIf="error" class="error">
+        {{ error }}
+    </div>
+
+    <div class="btn-row">
+        <button class="btn btn-primary" (click)="newRecipe()">
+            New recipe
+        </button>
+    </div>
+
+    <div class="recipes-grid" *ngIf="recipes?.length; else noRecipes">
+        <article class="recipe-card" *ngFor="let r of recipes">
+            <div class="recipe-image">
+                <img *ngIf="r.photo; else placeholder" [src]="getImageUrl(r.photo)" [alt]="r.name" />
+                <ng-template #placeholder>
+                    <div class="placeholder-image">
+                        <span>No photo</span>
+                    </div>
+                </ng-template>
+            </div>
+
+            <div class="recipe-content">
+                <h3 class="recipe-title">
+                    {{ r.name }} , Created By {{ r.createdBy }}
+                </h3>
+
+                <p class="recipe-description" [innerHTML]="r.description || 'No description yet.'"></p>
+
+                <div class="btn-row card-actions">
+                    <button class="btn btn-secondary" (click)="edit(r.id)">
+                        Edit
+                    </button>
+                    <button class="btn btn-secondary" (click)="del(r.id)">
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </article>
+    </div>
+
+    <ng-template #noRecipes>
+        <p class="auth-footer">
+            No recipes yet.
+            <a (click)="newRecipe()" style="cursor: pointer;">Create your first one</a>
+        </p>
+    </ng-template>
+</div>
