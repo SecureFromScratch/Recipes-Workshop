@@ -1,4 +1,23 @@
 ## Installation 
+For online workshop via GitHub CodeSpaces
+
+1. Create FREE GitHub account (if you don't have one):
+   https://github.com/signup
+
+2. Open workshop repository(this one!):
+   https://github.com/SecureFromScratch/Recipes-Workshop
+
+3. Click the green "Code" button
+
+4. Click "Codespaces" tab
+
+5. Click "Create codespace on main"
+
+6. Wait 5 minutes while environment sets up
+
+7. When you see "✅ SETUP COMPLETE!" → You're ready!
+
+---
 
 For automatic installation
 1. follow the [PREREQUISITES](./Recipes/PREREQUISITES.md)
