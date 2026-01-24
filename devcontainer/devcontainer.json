@@ -1,0 +1,100 @@
+{
+  "name": "SecureFromScratch - Recipes Workshop",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
+  
+  "features": {
+    "ghcr.io/devcontainers/features/dotnet:2": {
+      "version": "8.0",
+      "installUsingApt": false
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20",
+      "nodeGypDependencies": true
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "moby": true
+    },
+    "ghcr.io/devcontainers/features/aws-cli:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/git:1": {
+      "version": "latest"
+    }
+  },
+  
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-dotnettools.csharp",
+        "ms-dotnettools.csdevkit",
+        "ms-dotnettools.vscode-dotnet-runtime",
+        "angular.ng-template",
+        "ms-azuretools.vscode-docker",
+        "ms-vscode.powershell",
+        "editorconfig.editorconfig",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "/bin/bash"
+          }
+        },
+        "files.eol": "\n",
+        "editor.formatOnSave": true,
+        "omnisharp.useModernNet": true,
+        "dotnet.server.useOmnisharp": false
+      }
+    }
+  },
+  
+  "forwardPorts": [5000, 5001, 4200, 4566, 14333],
+  
+  "portsAttributes": {
+    "5000": {
+      "label": "API (HTTP)",
+      "protocol": "http",
+      "onAutoForward": "notify"
+    },
+    "5001": {
+      "label": "API (HTTPS)",
+      "protocol": "https",
+      "onAutoForward": "notify"
+    },
+    "4200": {
+      "label": "Angular Frontend",
+      "protocol": "http",
+      "onAutoForward": "openBrowser"
+    },
+    "4566": {
+      "label": "LocalStack",
+      "protocol": "http",
+      "onAutoForward": "ignore"
+    },
+    "14333": {
+      "label": "SQL Server",
+      "protocol": "tcp",
+      "onAutoForward": "ignore"
+    }
+  },
+  
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  
+  "remoteUser": "vscode",
+  
+  "containerEnv": {
+    "DOTNET_CLI_TELEMETRY_OPTOUT": "1",
+    "ASPNETCORE_ENVIRONMENT": "Development"
+  },
+  
+  "mounts": [
+    "source=${localWorkspaceFolder}/.devcontainer/bashrc-append.sh,target=/home/vscode/.bashrc-append,type=bind,consistency=cached"
+  ],
+  
+  "postAttachCommand": {
+    "server": "echo 'Workspace ready! Press F5 to start debugging or run: cd src/Recipes.Api && dotnet run'"
+  }
+}
