@@ -20,8 +20,8 @@ For online workshop via GitHub CodeSpaces
 ---
 
 For automatic installation
-1. follow the [PREREQUISITES](./Recipes/PREREQUISITES.md)
-2. Download [setup-lab](./Recipes/setup-lab.ps1)
+1. follow the [PREREQUISITES](./PREREQUISITES.md)
+2. Download [setup-lab](./setup-lab.ps1)
 3. Right-click PowerShell -> Run as Administrator
 4. Navigate to your Download folder
 5. Run:
