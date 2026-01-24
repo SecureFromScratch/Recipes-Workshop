@@ -1,4 +1,4 @@
-## If migration failure try again
+## In DB migration failure try again
 
 cd /workspaces/Recipes-Workshop/src/Recipes.Api
 
@@ -11,10 +11,12 @@ SA_PASS=$(aws --endpoint-url=http://localhost:4566 secretsmanager get-secret-val
 echo "SA Password: $SA_PASS"
 
 ### Reset database
+```bash
 docker compose down sqlserver -v
 export MSSQL_SA_PASSWORD="$SA_PASS"
 docker compose up -d sqlserver
 sleep 20
+```
 
 ### Initialize database
 docker exec -i recipes-sqlserver /opt/mssql-tools18/bin/sqlcmd \
