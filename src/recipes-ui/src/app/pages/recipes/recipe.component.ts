@@ -3,14 +3,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RecipesService, RecipeCreateUpdate, RecipeStatus } from '../../services/recipes.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { EditorComponent } from '@tinymce/tinymce-angular';
+
 
 type PhotoMode = 'url' | 'upload' | 'fetch';
 
 @Component({
     selector: 'app-recipe',
     standalone: true,
-    imports: [CommonModule, FormsModule, EditorComponent],
+    imports: [CommonModule, FormsModule],
     templateUrl: './recipe.component.html'
 })
 export class RecipeComponent implements OnInit {
@@ -19,7 +19,7 @@ export class RecipeComponent implements OnInit {
     dto: RecipeCreateUpdate = {
         name: '',
         description: '',
-        photo: '',        
+        photo: '',
         createdBy: ''
     };
 
@@ -28,8 +28,8 @@ export class RecipeComponent implements OnInit {
     photoMode: PhotoMode = 'fetch';
     selectedFile: File | null = null;
     imagePreview: string | null = null;
-    
-    
+
+
     fetchUrl: string = '';
     fetchFilename: string = '';
 
@@ -51,7 +51,7 @@ export class RecipeComponent implements OnInit {
                 this.dto = {
                     name: r.name,
                     description: r.description ?? '',
-                    photo: r.photo ?? '',                    
+                    photo: r.photo ?? '',
                     createdBy: r.createdBy
                 };
             },
@@ -90,7 +90,7 @@ export class RecipeComponent implements OnInit {
 
         const dtoToSend: RecipeCreateUpdate = {
             name: this.dto.name,
-            description: this.dto.description,            
+            description: this.dto.description,
             photo: this.photoMode === 'url' ? (this.dto.photo ?? '') : '',
             createdBy: this.dto.createdBy
         };
@@ -136,10 +136,10 @@ export class RecipeComponent implements OnInit {
             });
             return;
         }
-        
+
         if (this.photoMode === 'fetch') {
             console.log('Fetch mode detected!');
-            
+
             if (!this.fetchUrl) {
                 console.error('Fetch URL is empty!');
                 this.error = 'Please provide a URL to fetch';

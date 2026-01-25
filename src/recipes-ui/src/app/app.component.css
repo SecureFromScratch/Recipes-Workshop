@@ -231,7 +231,7 @@ body {
 .form-select {
     width: 100%;
     padding: 0.6rem 0.75rem;
-    border-radius: 999px;
+    border-radius: 999px;  /* Pill shape for inputs */
     border: 1px solid #d1d5db;
     background: #020617;
     color: #e5e7eb;
@@ -251,6 +251,24 @@ body {
     box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.7);
 }
 
+/* Fix for textarea - override pill shape */
+textarea.form-control,
+textarea.recipe-description {
+    border-radius: 12px !important;
+    padding: 1rem !important;
+    line-height: 1.6 !important;
+    white-space: pre-wrap !important;
+    overflow-wrap: break-word !important;
+    box-sizing: border-box !important;
+}
+
+textarea.form-control::placeholder,
+textarea.recipe-description::placeholder {
+    line-height: 1.6 !important;
+    white-space: pre-wrap !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
 /* messages */
 
 .info,

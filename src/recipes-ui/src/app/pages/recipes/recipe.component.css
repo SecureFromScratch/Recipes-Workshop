@@ -1,0 +1,37 @@
+.recipe-description {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.8;
+  padding: 16px;
+  resize: vertical;
+  min-height: 250px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.recipe-description:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+.recipe-description::placeholder {
+  color: #999;
+  opacity: 1;
+}
+/* In your component CSS or global styles */
+
+textarea.form-control {
+  padding: 16px !important;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+textarea.form-control::placeholder {
+  color: #6c757d;
+  opacity: 0.8;
+  padding: 0;
+  white-space: pre-wrap;
+}

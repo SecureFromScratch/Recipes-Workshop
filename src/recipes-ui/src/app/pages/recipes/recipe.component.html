@@ -24,29 +24,27 @@
                     name="name"
                     placeholder="Chocolate chip cookies"
                 />
-            </div>           
+            </div>
         </div>
 
         <div class="form-group">
-            <label>Description</label>
-            <div class="rich-text-wrapper">
-                <editor
-                    apiKey="r1pdrmpmise3y7ifd61jlmc2mhc9grv2obgoh69mjnf0wagc"
-                    [(ngModel)]="dto.description"
-                    name="description"
-                    [init]="{
-                        menubar: false,
-                        height: 260,
-                        plugins: 'anchor autolink charmap codesample emoticons link lists media searchreplace table visualblocks wordcount',
-                        toolbar: 'undo redo | blocks | bold italic underline | link image | align | bullist numlist | removeformat'
-                    }"
-                >
-                </editor>
-            </div>
-            <p class="hint" style="margin-top: 0.35rem;">
-                Use the editor to describe ingredients, steps, and serving suggestions.
-            </p>
-        </div>
+        <label>Description</label>
+        <textarea
+          [(ngModel)]="dto.description"
+          name="description"
+          rows="10"
+          class="form-control recipe-description"
+          placeholder="Describe your recipe:
+
+      - Ingredients (e.g., 2 cups flour, 1 cup sugar)
+      - Preparation steps (numbered or bulleted)
+      - Cooking time and temperature
+      - Serving suggestions"
+        ></textarea>
+        <small class="form-text text-muted">
+          💡 Tip: Use bullet points (•) or numbers for better readability
+        </small>
+      </div>
 
         <div class="form-group">
             <label>Photo</label>
@@ -70,7 +68,7 @@
                     />
                     Upload file
                 </label>
-                
+
             </div>
 
             <!-- Image URL mode -->
@@ -96,35 +94,35 @@
                     (change)="onFileChange($event)"
                     #fileInput
                 />
-                
+
                 <div *ngIf="selectedFile" style="margin-top: 0.5rem;" class="hint">
                     Selected: {{ selectedFile.name }} ({{ formatFileSize(selectedFile.size) }})
                 </div>
-                
+
                 <div *ngIf="imagePreview" class="recipe-photo-preview">
                     <img [src]="imagePreview" alt="Upload preview" />
                     <span class="hint">Upload preview</span>
                 </div>
             </div>
-            
+
             <div *ngIf="photoMode === 'fetch'" style="margin-top: 0.6rem;">
                 <div class="form-group" style="margin-bottom: 0.8rem;">
                     <label for="fetchUrl" style="font-size: 0.9rem; margin-bottom: 0.3rem; display: block;">
-                        URL to fetch 
+                        URL to fetch
                     </label>
                     <input
                         id="fetchUrl"
                         class="form-control"
                         [(ngModel)]="fetchUrl"
                         name="fetchUrl"
-                        placeholder="http://localhost:4566/_localstack/diagnose"                        
+                        placeholder="http://localhost:4566/_localstack/diagnose"
                     />
-                    
+
                 </div>
 
                 <div class="form-group">
                     <label for="fetchFilename" style="font-size: 0.9rem; margin-bottom: 0.3rem; display: block;">
-                        Save as filename 
+                        Save as filename
                     </label>
                     <input
                         id="fetchFilename"
@@ -132,9 +130,9 @@
                         [(ngModel)]="fetchFilename"
                         name="fetchFilename"
                         placeholder="recipe.jpg"
-                    />                    
+                    />
                 </div>
-                
+
             </div>
         </div>
 
