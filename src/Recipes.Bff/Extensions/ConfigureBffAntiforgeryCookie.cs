@@ -15,7 +15,7 @@ namespace Recipes.Bff.Extensions
                 options.Cookie.HttpOnly = false; // for dev / JS access
                 options.Cookie.SameSite = SameSiteMode.Lax;
                 options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest; // dev only
-                options.HeaderName = "X-CSRF-TOKEN";
+                options.HeaderName = "X-XSRF-TOKEN";
             });
 
             return services;

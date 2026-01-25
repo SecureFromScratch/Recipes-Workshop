@@ -4,6 +4,7 @@ using Recipes.Bff.Extensions;
 using Recipes.Bff.Options;
 using System.Net.Http.Headers;
 using Yarp.ReverseProxy.Transforms;
+using Recipes.Bff.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,9 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddAuthorization();
+//csrf
+builder.Services.AddBffAntiforgery();
+
 
 builder.Services.Configure<ApiOptions>(options =>
 {

@@ -3,6 +3,7 @@
 ### 1. Implement Anti-Forgery Tokens (Recommended)
 
 **Add an AntiForgery Extension**
+Add AntiCSRF cookie creation service 
 
 ```csharp
 public static class AntiforgeryServiceCollectionExtensions
@@ -15,7 +16,7 @@ public static class AntiforgeryServiceCollectionExtensions
                 options.Cookie.HttpOnly = false; // for dev / JS access
                 options.Cookie.SameSite = SameSiteMode.Lax;
                 options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest; // dev only
-                options.HeaderName = "X-CSRF-TOKEN";
+                options.HeaderName = "X-XSRF-TOKEN";
             });
 
             return services;
@@ -23,31 +24,81 @@ public static class AntiforgeryServiceCollectionExtensions
     }
 ```
 
-**Add Token to Responses:**
+**Route for getting anticsrf token:**
 
 ```csharp
-app.MapGet("/api/csrf-token", (IAntiforgery antiforgery, HttpContext context) =>
-{
-    var tokens = antiforgery.GetAndStoreTokens(context);
-    return Results.Ok(new { token = tokens.RequestToken });
-}).RequireAuthorization();
+[HttpGet("antiforgery")]
+[AllowAnonymous]
+[IgnoreAntiforgeryToken]
+    public IActionResult GetAntiforgeryToken()
+    {
+        var tokens = _antiforgery.GetAndStoreTokens(HttpContext);
+
+        // The cookie is set automatically by GetAndStoreTokens
+        // Return the REQUEST token so Angular knows what to send in the header
+        return Ok(new { token = tokens.RequestToken });
+    }
 ```
 
 **Validate Tokens on State-Changing Requests:**
-To Enable Automatic Validation Globally
-replace the first snippet with the second one on Prgoram.cs
-
+To Enable Automatic Validation Globally add a middleware and register it
 
 ```csharp
-builder.Services.AddControllersWithViews();
+using Microsoft.AspNetCore.Antiforgery;
+
+namespace Recipes.Bff.Middleware
+{
+    public class AntiforgeryMiddleware
+    {
+        private readonly RequestDelegate _next;
+        private readonly IAntiforgery _antiforgery;
+
+        public AntiforgeryMiddleware(RequestDelegate next, IAntiforgery antiforgery)
+        {
+            _next = next;
+            _antiforgery = antiforgery;
+        }
+
+        public async Task InvokeAsync(HttpContext context)
+        {
+            var method = context.Request.Method;
+            var path = context.Request.Path.Value ?? "";
+
+            // Validate CSRF on POST/PUT/DELETE/PATCH to /api or /bff
+            bool needsValidation = 
+                (method == "POST" || method == "PUT" || method == "DELETE" || method == "PATCH") &&
+                (path.StartsWith("/api") || path.StartsWith("/bff"));
+
+            if (needsValidation)
+            {
+                try
+                {
+                    await _antiforgery.ValidateRequestAsync(context);
+                }
+                catch (AntiforgeryValidationException)
+                {
+                    context.Response.StatusCode = 403;
+                    await context.Response.WriteAsJsonAsync(new { error = "CSRF validation failed" });
+                    return;
+                }
+            }
+
+            await _next(context);
+        }
+    }
+}
 ```
 
 ```csharp
-builder.Services.AddControllersWithViews(options =>
-{
-    // ✅ Validate antiforgery tokens globally on all non-GET requests
-    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-});
+...
+var app = builder.Build();
+app.UseCors();
+
+app.UseMiddleware<AntiforgeryMiddleware>();
+
+app.UseAuthentication();
+app.UseAuthorization();
+.....
 
 ```
 

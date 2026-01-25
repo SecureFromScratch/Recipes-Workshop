@@ -7,7 +7,7 @@ export const csrfInterceptor: HttpInterceptorFn = (req, next) => {
     const authService = inject(AuthService);
     
     // Only for mutating requests to BFF
-    if (!['POST', 'PUT', 'DELETE', 'PATCH'].includes(req.method) || !req.url.includes('/bff')) {
+    if (!['POST', 'PUT', 'DELETE', 'PATCH'].includes(req.method) ) {
         return next(req);
     }
     
