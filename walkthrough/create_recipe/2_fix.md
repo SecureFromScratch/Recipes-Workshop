@@ -2,22 +2,25 @@
 
 ### 1. Implement Anti-Forgery Tokens (Recommended)
 
-**Update BFF `Program.cs`:**
+**Add an AntiForgery Extension**
 
 ```csharp
-// Add Anti-Forgery services
-builder.Services.AddAntiforgery(options =>
-{
-    options.HeaderName = "X-CSRF-TOKEN";
-    options.Cookie.Name = "X-CSRF-TOKEN";
-    options.Cookie.SameSite = SameSiteMode.Strict;
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-});
+public static class AntiforgeryServiceCollectionExtensions
+    {
+        public static IServiceCollection AddBffAntiforgery(this IServiceCollection services)
+        {
+            services.AddAntiforgery(options =>
+            {
+                options.Cookie.Name = "bff-xsrf";
+                options.Cookie.HttpOnly = false; // for dev / JS access
+                options.Cookie.SameSite = SameSiteMode.Lax;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest; // dev only
+                options.HeaderName = "X-CSRF-TOKEN";
+            });
 
-var app = builder.Build();
-
-// Use antiforgery middleware
-app.UseAntiforgery();
+            return services;
+        }
+    }
 ```
 
 **Add Token to Responses:**
