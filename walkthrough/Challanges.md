@@ -25,7 +25,7 @@ What can you do to prevent it?
 
 When creating a new recipe, its status is set to **Draft**. Only an administrator should be able to change a recipe from **Draft** to **Published**, but the system is vulnerable.
 A user can manipulate the process to get their recipe approved. Can you figure out how?
-Before you fix this vulnerability exploit the next challange
+Before you fix this vulnerability exploit the next two challanges
 
 ---
 
@@ -44,12 +44,6 @@ It’s possible to retrieve AWS information only from localhost. How could an at
 
 ---
 
-### Denial of service
-
-It's possible to overwrite an important system file, which can cause a denial of service. Can you do it?
-
----
-
 ### Delete someone else’s recipe
 
 According to the requirements, only an admin or the recipe’s creator can delete a recipe.
@@ -57,6 +51,14 @@ Can you delete someone else’s recipe?
 What needs to be changed in the code to prevent this?
 
 ---
+
+
+### Denial of service
+
+It's possible to overwrite an important system file, which can cause a denial of service. Can you do it?
+
+---
+
 
 ### Create a Recipe in Someone Else’s Name
 
