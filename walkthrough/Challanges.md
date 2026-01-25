@@ -70,7 +70,17 @@ A developer cannot set `SameSite=None` without also setting `Secure=true`, becau
 
 So for this discussion, stick to the scenario where the attacker can host a page on the same domain.
 
+Before the fixing the vulnerability process to the next challange.
+
 ---
+
+### Login with Attacker credentails
+
+A hacker can trick the user into logging in under the hacker’s identity. Later, the user might provide sensitive information that the hacker will be able to access.
+In this exercise, prepare an HTML page that runs from `http://localhost:8888` and demonstrates how the user can be tricked into logging in.
+
+---
+
 
 ### Admin Dashboard Access
 
@@ -82,12 +92,6 @@ What needs to be changed in the code to prevent this?
 
 ---
 
-### Login with Attacker credentails
-
-A hacker can trick the user into logging in under the hacker’s identity. Later, the user might provide sensitive information that the hacker will be able to access.
-In this exercise, prepare an HTML page that runs from `http://localhost:8888` and demonstrates how the user can be tricked into logging in.
-
----
 
 ### Prompt Injection Against the RecipeAI Controller
 
