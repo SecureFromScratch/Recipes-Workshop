@@ -34,15 +34,21 @@ app.MapGet("/api/csrf-token", (IAntiforgery antiforgery, HttpContext context) =>
 ```
 
 **Validate Tokens on State-Changing Requests:**
+To Enable Automatic Validation Globally
+replace the first snippet with the second one on Prgoram.cs
+
 
 ```csharp
-app.MapPost("/api/recipes", 
-    [ValidateAntiForgeryToken] 
-    async (Recipe recipe, IRecipeService service) =>
+builder.Services.AddControllersWithViews();
+```
+
+```csharp
+builder.Services.AddControllersWithViews(options =>
 {
-    var created = await service.CreateRecipeAsync(recipe);
-    return Results.Created($"/api/recipes/{created.Id}", created);
-}).RequireAuthorization();
+    // ✅ Validate antiforgery tokens globally on all non-GET requests
+    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+});
+
 ```
 
 ### 2. Fix CORS Configuration
