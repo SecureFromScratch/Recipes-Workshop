@@ -41,14 +41,14 @@ builder.Services
                 var token = httpContext.User.FindFirst("access_token")?.Value;
                 if (!string.IsNullOrEmpty(token))
                 {
-                    transformContext.ProxyRequest.Headers.Authorization = 
+                    transformContext.ProxyRequest.Headers.Authorization =
                         new AuthenticationHeaderValue("Bearer", token);
                 }
             }
         });
     });
 
-builder.Services.AddCors(options =>
+/*builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
@@ -58,7 +58,36 @@ builder.Services.AddCors(options =>
               .AllowCredentials();
     });
 });
+*/
+// codespace support
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.SetIsOriginAllowed(origin =>
+            {
+                // Allow localhost for local development
+                if (origin.StartsWith("http://localhost") ||
+                    origin.StartsWith("http://127.0.0.1") ||
+                    origin.StartsWith("https://localhost") ||
+                    origin.StartsWith("https://127.0.0.1"))
+                {
+                    return true;
+                }
 
+                // Allow GitHub Codespaces
+                if (origin.Contains(".app.github.dev"))
+                {
+                    return true;
+                }
+
+                return false;
+            })
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
+    });
+});
 var app = builder.Build();
 
 app.UseCors();

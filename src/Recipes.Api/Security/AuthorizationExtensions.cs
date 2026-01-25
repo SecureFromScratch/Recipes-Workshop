@@ -6,6 +6,9 @@ public static class AuthorizationExtensions
 {
     public static IServiceCollection AddAuthorizationPolicies(this IServiceCollection services)
     {
+        services.AddScoped<IAuthorizationHandler, RecipeOwnerOrAdminHandler>();
+
+
         services.AddAuthorization(options =>
         {
             // Admin Only Policy
@@ -21,6 +24,13 @@ public static class AuthorizationExtensions
                 policy.RequireAuthenticatedUser();
                 policy.RequireRole("User", "Admin");
             });
+
+            // Owner or Admin Policy
+            options.AddPolicy("OwnerOrAdmin", policy =>
+          {
+              policy.RequireAuthenticatedUser();
+              policy.Requirements.Add(new OwnerOrAdminRequirement());
+          });
 
             // Moderator Policy
             options.AddPolicy("ModeratorOnly", policy =>
