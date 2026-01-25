@@ -19,7 +19,7 @@ For online workshop via GitHub CodeSpaces
 
 ---
 
-For automatic installation
+For local automatic installation
 1. follow the [PREREQUISITES](./PREREQUISITES.md)
 2. Download [setup-lab](./setup-lab.ps1)
 3. Right-click PowerShell -> Run as Administrator
@@ -31,7 +31,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force
 ```
 
 ----
-For manual installation follow the instructions below to install the lab.
+For local manual installation follow the instructions below to install the lab.
 Detailed explanations are linked to each step.
 ### 1. Install .net8
 
