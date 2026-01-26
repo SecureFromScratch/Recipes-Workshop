@@ -29,8 +29,7 @@ Before you fix this vulnerability exploit the next two challanges
 
 ---
 
-### Access to internal sysem (this challenge is not available in codespaces)
-
+### Access to internal sysem 
 It’s possible to retrieve AWS information only from localhost. How could an attacker trick the system into exposing this information to the outside world?
 
 1. Check service health
