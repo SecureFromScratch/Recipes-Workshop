@@ -1,6 +1,6 @@
-# Welcome!
-
+# Welcome to Hacking The Recipes!
 After the installation, go to the [challanges](walkthrough/Challanges.md)
+![The Client GUI](images/lab.png)
 
 ## Installation
 
@@ -86,4 +86,4 @@ Follow the secret manager walkthrough: [Secret Manager](preps/4_secret_manager.m
 ng s
 ```
 ---
-![The Client GUI](images/lab.png)
+
