@@ -82,10 +82,8 @@ Follow the secret manager walkthrough: [Secret Manager](preps/4_secret_manager.m
 1. Go to src/recipes-ui folder
 2. run
 
-[The Client GUI](images/lab.png)
-
 ```bash
 ng s
 ```
-
 ---
+![The Client GUI](images/lab.png)
