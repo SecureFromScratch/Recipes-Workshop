@@ -123,31 +123,46 @@ if [ -z "$SA_PASSWORD" ]; then
     exit 1
 fi
 
-# Set environment variable for SQL Server
-export MSSQL_SA_PASSWORD="$SA_PASSWORD"
+# Check if SQL Server container exists and remove it if password doesn't match
+if docker ps -a --format '{{.Names}}' | grep -q "^recipes-sqlserver$"; then
+    print_step "Checking existing SQL Server container..."
+    # Try to connect with the expected password
+    if ! docker exec recipes-sqlserver /opt/mssql-tools18/bin/sqlcmd \
+        -S localhost -U sa -P "$SA_PASSWORD" -C -Q "SELECT 1" > /dev/null 2>&1; then
+        print_warning "SQL Server password mismatch detected, recreating container..."
+        docker compose down sqlserver > /dev/null 2>&1
+        docker volume rm recipesapi_mssql_data > /dev/null 2>&1 || true
+    fi
+fi
 
 # Start SQL Server with correct password
+export MSSQL_SA_PASSWORD="$SA_PASSWORD"
 docker compose up -d sqlserver > /dev/null 2>&1
 print_success "SQL Server container started"
 
 # Wait for SQL Server with proper health check
 print_step "Waiting for SQL Server to be ready..."
-sleep 20
-
-# Test SQL Server connection with retries
-for i in {1..15}; do
+READY=0
+for i in {1..30}; do
     if docker exec recipes-sqlserver /opt/mssql-tools18/bin/sqlcmd \
         -S localhost -U sa -P "$SA_PASSWORD" -C -Q "SELECT 1" > /dev/null 2>&1; then
+        READY=1
         print_success "SQL Server is ready"
         break
     fi
-    if [ $i -eq 15 ]; then
-        print_error "SQL Server failed to start"
-        docker logs recipes-sqlserver
+    if [ $i -eq 30 ]; then
+        print_error "SQL Server failed to start after 150 seconds"
+        print_step "Container logs:"
+        docker logs --tail 50 recipes-sqlserver
         exit 1
     fi
     sleep 5
 done
+
+if [ $READY -eq 0 ]; then
+    print_error "SQL Server is not ready"
+    exit 1
+fi
 
 # Step 10: Initialize database
 print_step "Initializing database and users..."
@@ -183,11 +198,16 @@ fi
 # Apply migration
 print_step "Applying migration to database..."
 CONN_STRING="Server=localhost,14333;Database=Recipes;User Id=sa;Password=$SA_PASSWORD;TrustServerCertificate=true;"
-dotnet ef database update --connection "$CONN_STRING" > /dev/null 2>&1
 
-if [ $? -ne 0 ]; then
-    print_warning "First migration attempt failed, trying again with verbose output..."
-    dotnet ef database update --connection "$CONN_STRING" --verbose
+# First attempt
+if dotnet ef database update --connection "$CONN_STRING" > /dev/null 2>&1; then
+    print_success "Migration applied successfully"
+else
+    print_warning "First migration attempt failed, trying with verbose output..."
+    if ! dotnet ef database update --connection "$CONN_STRING"; then
+        print_error "Migration failed on retry"
+        exit 1
+    fi
 fi
 
 # Step 12: CRITICAL - Verify tables were created

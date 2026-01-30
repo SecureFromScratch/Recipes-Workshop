@@ -1,10 +1,13 @@
 # Welcome to Hacking The Recipes!
+
 After the installation, go to the [challanges](walkthrough/Challanges.md)
 ![The Client GUI](images/lab.png)
 
-## Installation
+## Quick Start Options
 
-For online workshop via GitHub CodeSpaces
+### Option 1: GitHub Codespaces (Recomended-Cloud)
+
+**Best for**: Online workshop, no local installation needed
 
 1. Create FREE GitHub account (if you don't have one):
    https://github.com/signup
@@ -24,7 +27,26 @@ For online workshop via GitHub CodeSpaces
 
 ---
 
-For local automatic installation
+### Option 2: VS Code DevContainer (Local-Container)
+
+**Best for**: Local development with VS Code
+
+1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop)
+2. Install [VS Code](https://code.visualstudio.com/)
+3. Install the "Dev Containers" extension in VS Code
+4. Clone this repository: `git clone https://github.com/SecureFromScratch/Recipes-Workshop.git`
+5. Open the folder in VS Code
+6. Click "Reopen in Container" when prompted
+7. Wait 5-10 minutes for automatic setup
+8. When you see "✅ SETUP COMPLETE!" → You're ready!
+
+📖 See [DevContainer Setup Guide](.devcontainer/README.md) for troubleshooting
+
+---
+
+### Option 3: Automated PowerShell Setup (Windows)
+
+**Best for**: Local Windows installation without DevContainers
 
 1. follow the [PREREQUISITES](./PREREQUISITES.md)
 2. Download [setup-lab](./setup-lab.ps1)
@@ -38,6 +60,10 @@ Set-ExecutionPolicy Bypass -Scope Process -Force
 ```
 
 ---
+
+### Option 4: Manual Installation
+
+**Best for**: Custom setup or troubleshooting
 
 For local manual installation follow the instructions below to install the lab.
 Detailed explanations are linked to each step.
@@ -85,5 +111,5 @@ Follow the secret manager walkthrough: [Secret Manager](preps/4_secret_manager.m
 ```bash
 ng s
 ```
----
 
+---
