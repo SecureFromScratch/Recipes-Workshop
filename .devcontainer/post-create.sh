@@ -177,75 +177,66 @@ else
     exit 1
 fi
 
-# Step 11: Create and apply migrations
-print_step "Creating Entity Framework migrations..."
+# Step 11: Check if tables already exist
+print_step "Checking if database tables already exist..."
+EXISTING_TABLES=$(docker exec recipes-sqlserver /opt/mssql-tools18/bin/sqlcmd \
+    -S localhost -U sa -P "$SA_PASSWORD" -d Recipes -C -h-1 \
+    -Q "SET NOCOUNT ON; SELECT COUNT(*) FROM sys.tables WHERE name IN ('Users', 'Recipe')" 2>&1 | tr -d '[:space:]')
 
-# Remove old migrations if they exist
-if [ -d "Migrations" ]; then
-    rm -rf Migrations
-    print_warning "Removed old migrations"
-fi
-
-# Create fresh migration
-dotnet ef migrations add InitialCreate > /dev/null 2>&1
-if [ $? -eq 0 ]; then
-    print_success "Migration created"
+if [ "$EXISTING_TABLES" = "2" ]; then
+    print_success "Tables already exist, skipping migrations"
 else
-    print_error "Migration creation failed"
-    exit 1
-fi
+    # Step 12: Create and apply migrations
+    print_step "Creating Entity Framework migrations..."
 
-# Apply migration
-print_step "Applying migration to database..."
-CONN_STRING="Server=localhost,14333;Database=Recipes;User Id=sa;Password=$SA_PASSWORD;TrustServerCertificate=true;"
+    # Remove old migrations if they exist
+    if [ -d "Migrations" ]; then
+        rm -rf Migrations
+        print_warning "Removed old migrations"
+    fi
 
-# First attempt
-if dotnet ef database update --connection "$CONN_STRING" > /dev/null 2>&1; then
-    print_success "Migration applied successfully"
-else
-    print_warning "First migration attempt failed, trying with verbose output..."
-    if ! dotnet ef database update --connection "$CONN_STRING"; then
-        print_error "Migration failed on retry"
+    # Create fresh migration
+    dotnet ef migrations add InitialCreate > /dev/null 2>&1
+    if [ $? -eq 0 ]; then
+        print_success "Migration created"
+    else
+        print_error "Migration creation failed"
         exit 1
+    fi
+
+    # Apply migration
+    print_step "Applying migration to database..."
+    CONN_STRING="Server=localhost,14333;Database=Recipes;User Id=sa;Password=$SA_PASSWORD;TrustServerCertificate=true;"
+
+    # First attempt
+    if dotnet ef database update --connection "$CONN_STRING" > /dev/null 2>&1; then
+        print_success "Migration applied successfully"
+    else
+        print_warning "First migration attempt failed, trying with verbose output..."
+        if ! dotnet ef database update --connection "$CONN_STRING"; then
+            print_error "Migration failed on retry"
+            exit 1
+        fi
     fi
 fi
 
-# Step 12: CRITICAL - Verify tables were created
-print_step "Verifying tables were created..."
+# Step 13: Verify tables were created
+print_step "Verifying database tables..."
 TABLES_COUNT=$(docker exec recipes-sqlserver /opt/mssql-tools18/bin/sqlcmd \
     -S localhost -U sa -P "$SA_PASSWORD" -d Recipes -C -h-1 \
     -Q "SET NOCOUNT ON; SELECT COUNT(*) FROM sys.tables WHERE name IN ('Users', 'Recipe')" 2>&1 | tr -d '[:space:]')
 
 if [ "$TABLES_COUNT" = "2" ]; then
-    print_success "Database migration applied successfully"
-    print_success "Tables created: Users, Recipe"
+    print_success "Database tables verified: Users, Recipe"
 elif [ "$TABLES_COUNT" = "1" ]; then
-    print_warning "Only 1 table created, expected 2"
-    print_step "Dropping migration history and retrying..."
-    
-    # Drop history and retry
+    print_error "Only 1 table found, expected 2"
+    print_step "Current tables in database:"
     docker exec recipes-sqlserver /opt/mssql-tools18/bin/sqlcmd \
         -S localhost -U sa -P "$SA_PASSWORD" -d Recipes -C \
-        -Q "DROP TABLE IF EXISTS __EFMigrationsHistory" > /dev/null 2>&1
-    
-    # Remove and recreate migration
-    rm -rf Migrations
-    dotnet ef migrations add InitialCreate > /dev/null 2>&1
-    dotnet ef database update --connection "$CONN_STRING"
-    
-    # Check again
-    TABLES_COUNT=$(docker exec recipes-sqlserver /opt/mssql-tools18/bin/sqlcmd \
-        -S localhost -U sa -P "$SA_PASSWORD" -d Recipes -C -h-1 \
-        -Q "SET NOCOUNT ON; SELECT COUNT(*) FROM sys.tables WHERE name IN ('Users', 'Recipe')" 2>&1 | tr -d '[:space:]')
-    
-    if [ "$TABLES_COUNT" = "2" ]; then
-        print_success "Tables created successfully on retry!"
-    else
-        print_error "Migration retry failed - tables still not created"
-        exit 1
-    fi
+        -Q "SELECT name FROM sys.tables ORDER BY name"
+    exit 1
 else
-    print_error "Migration failed - tables not detected"
+    print_error "Tables not found in database"
     print_step "Current tables in database:"
     docker exec recipes-sqlserver /opt/mssql-tools18/bin/sqlcmd \
         -S localhost -U sa -P "$SA_PASSWORD" -d Recipes -C \
@@ -253,7 +244,7 @@ else
     exit 1
 fi
 
-# Step 13: Verify recipes_app can login
+# Step 14: Verify recipes_app can login
 print_step "Verifying recipes_app user can login..."
 if docker exec recipes-sqlserver /opt/mssql-tools18/bin/sqlcmd \
     -S localhost -U recipes_app -P "StrongP4ssword123" -d Recipes -C \
