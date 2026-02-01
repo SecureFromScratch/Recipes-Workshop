@@ -142,6 +142,7 @@ public class RecipesController : ControllerBase
         m_authorizationService = authorizationService;
     }
 
+    [Authorize(Policy = "OwnerOrAdmin")] 
     [HttpDelete("{id:long}")]
     public async Task<IActionResult> Delete(long id)
     {
