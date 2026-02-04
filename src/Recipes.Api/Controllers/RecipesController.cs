@@ -82,6 +82,7 @@ namespace Recipes.Api.Controllers
       }
 
       [HttpDelete("{id:long}")]
+      [Authorize(Policy = "UserOrAdmin")] // WRONG!
       public async Task<IActionResult> Delete(long id)
       {
          var ok = await m_service.DeleteAsync(id);
