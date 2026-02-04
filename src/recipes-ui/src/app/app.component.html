@@ -11,6 +11,15 @@
                 </div>
             </div>
 
+            <!-- User Info Section - Only show when logged in -->
+            <div *ngIf="isLoggedIn" class="user-info">
+                <div class="user-avatar">{{ userInitials }}</div>
+                <div class="user-details">
+                    <div class="user-name">{{ currentUser?.userName }}</div>
+                    <div class="user-role">{{ isAdmin ? 'Administrator' : 'User' }}</div>
+                </div>
+            </div>
+
             <nav class="side-nav">
                 <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -19,20 +28,20 @@
                     </svg>
                     Home
                 </a>
-                <a routerLink="/recipes" routerLinkActive="active">
+                <a *ngIf="isLoggedIn" routerLink="/recipes" routerLinkActive="active">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
                         <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
                     </svg>
                     Recipes
                 </a>
-                <a routerLink="/login" routerLinkActive="active">
+                <a *ngIf="!isLoggedIn" routerLink="/login" routerLinkActive="active">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"></path>
                     </svg>
                     Login
                 </a>
-                <a routerLink="/register" routerLinkActive="active">
+                <a *ngIf="!isLoggedIn" routerLink="/register" routerLinkActive="active">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                         <circle cx="8.5" cy="7" r="4"></circle>
@@ -41,7 +50,7 @@
                     </svg>
                     Register
                 </a>
-                <a href="#" (click)="onLogout($event)">
+                <a *ngIf="isLoggedIn" href="#" (click)="onLogout($event)">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path>
                     </svg>
