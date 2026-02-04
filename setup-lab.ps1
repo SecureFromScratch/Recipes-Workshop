@@ -36,7 +36,7 @@ if ($LASTEXITCODE -ne 0) {
     Write-Host "See PREREQUISITES.md for detailed instructions." -ForegroundColor Yellow
     exit 1
 }
-Write-Host "      ✓ Docker Desktop is running" -ForegroundColor Gray
+Write-Host "      Docker Desktop is running" -ForegroundColor Gray
 
 # Step 2: Check PowerShell execution policy
 Write-Host "`n[2/10] Checking PowerShell execution policy..." -ForegroundColor Green
@@ -48,14 +48,14 @@ if ($executionPolicy -eq "Restricted") {
     
     if ($response -eq "Y" -or $response -eq "y") {
         Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
-        Write-Host "      ✓ Execution policy updated to RemoteSigned" -ForegroundColor Gray
+        Write-Host "      Execution policy updated to RemoteSigned" -ForegroundColor Gray
     } else {
         Write-Host "[ERROR] Cannot continue with Restricted execution policy" -ForegroundColor Red
         Write-Host "Please run: Set-ExecutionPolicy RemoteSigned -Scope CurrentUser" -ForegroundColor Yellow
         exit 1
     }
 } else {
-    Write-Host "      ✓ Execution policy is $executionPolicy" -ForegroundColor Gray
+    Write-Host "       Execution policy is $executionPolicy" -ForegroundColor Gray
 }
 
 # Step 3: Install .NET 8 SDK
@@ -76,9 +76,9 @@ if ($LASTEXITCODE -ne 0 -or -not ($dotnetVersion -like "8.*")) {
         Start-Sleep -Seconds 1
         $attempts++
     }
-    Write-Host "      ✓ .NET 8 SDK installed" -ForegroundColor Gray
+    Write-Host "       .NET 8 SDK installed" -ForegroundColor Gray
 } else {
-    Write-Host "      ✓ .NET 8 SDK already installed (version $dotnetVersion)" -ForegroundColor Gray
+    Write-Host "       .NET 8 SDK already installed (version $dotnetVersion)" -ForegroundColor Gray
 }
 
 # Step 4: Install Node.js
@@ -99,9 +99,9 @@ if ($LASTEXITCODE -ne 0) {
         Start-Sleep -Seconds 1
         $attempts++
     }
-    Write-Host "      ✓ Node.js installed" -ForegroundColor Gray
+    Write-Host "       Node.js installed" -ForegroundColor Gray
 } else {
-    Write-Host "      ✓ Node.js already installed (version $nodeVersion)" -ForegroundColor Gray
+    Write-Host "       Node.js already installed (version $nodeVersion)" -ForegroundColor Gray
 }
 
 # Step 5: Clone repository (NEW DEDICATED REPO!)
@@ -132,7 +132,7 @@ if (Test-Path $repoPath) {
 
 # Navigate to repository
 cd $repoPath
-Write-Host "      ✓ Repository ready at: $repoPath" -ForegroundColor Gray
+Write-Host "       Repository ready at: $repoPath" -ForegroundColor Gray
 
 # Step 6: Start LocalStack
 Write-Host "`n[6/10] Starting LocalStack..." -ForegroundColor Green
@@ -144,7 +144,7 @@ if ($LASTEXITCODE -ne 0) {
     exit 1
 }
 Pop-Location
-Write-Host "      ✓ LocalStack started" -ForegroundColor Gray
+Write-Host "       LocalStack started" -ForegroundColor Gray
 
 # Wait for LocalStack
 Write-Host "      Waiting for LocalStack to initialize (15 seconds)..." -ForegroundColor Gray
@@ -160,9 +160,9 @@ if ($LASTEXITCODE -ne 0) {
     # Refresh PATH
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
     
-    Write-Host "      ✓ AWS CLI installed" -ForegroundColor Gray
+    Write-Host "       AWS CLI installed" -ForegroundColor Gray
 } else {
-    Write-Host "      ✓ AWS CLI already installed" -ForegroundColor Gray
+    Write-Host "       AWS CLI already installed" -ForegroundColor Gray
 }
 
 # Configure AWS CLI
@@ -170,7 +170,7 @@ Write-Host "      Configuring AWS CLI for LocalStack..." -ForegroundColor Gray
 aws configure set aws_access_key_id localstack
 aws configure set aws_secret_access_key localstack
 aws configure set default.region us-east-1
-Write-Host "      ✓ AWS CLI configured" -ForegroundColor Gray
+Write-Host "       AWS CLI configured" -ForegroundColor Gray
 
 # Step 8: Create AWS Secrets
 Write-Host "`n[8/10] Creating AWS Secrets..." -ForegroundColor Green
@@ -187,25 +187,25 @@ aws --endpoint-url=http://localhost:4566 secretsmanager create-secret `
     --name recipes/dev/jwt-config `
     --secret-string '{"Secret":"ThisIsAStrongJwtSecretKey1234567","Issuer":"recipes-api","Audience":"recipes-client"}' 2>$null | Out-Null
 
-Write-Host "      ✓ Secrets created" -ForegroundColor Gray
+Write-Host "       Secrets created" -ForegroundColor Gray
 
 # Step 9: Install EF Tools
 Write-Host "`n[9/10] Installing Entity Framework tools..." -ForegroundColor Green
 dotnet tool install --global dotnet-ef 2>$null | Out-Null
-Write-Host "      ✓ EF Tools installed" -ForegroundColor Gray
+Write-Host "       EF Tools installed" -ForegroundColor Gray
 
 # Step 10: Install packages
 Write-Host "`n[10/10] Installing project dependencies..." -ForegroundColor Green
 
 Write-Host "      Installing NuGet packages (2-3 minutes)..." -ForegroundColor Gray
 dotnet restore
-Write-Host "      ✓ NuGet packages installed" -ForegroundColor Gray
+Write-Host "       NuGet packages installed" -ForegroundColor Gray
 
 Write-Host "      Installing npm packages (3-5 minutes)..." -ForegroundColor Gray
 Push-Location src/recipes-ui
 npm install 2>&1 | Out-Null
 Pop-Location
-Write-Host "      ✓ npm packages installed" -ForegroundColor Gray
+Write-Host "       npm packages installed" -ForegroundColor Gray
 
 # Setup database
 Write-Host "`n[BONUS] Setting up database..." -ForegroundColor Green
@@ -214,7 +214,7 @@ Push-Location src/Recipes.Api
 Pop-Location
 
 Write-Host "`n========================================" -ForegroundColor Cyan
-Write-Host "   ✓ SETUP COMPLETE!" -ForegroundColor Green
+Write-Host "    SETUP COMPLETE!" -ForegroundColor Green
 Write-Host "========================================`n" -ForegroundColor Cyan
 
 Write-Host "Workshop repository location:" -ForegroundColor White
