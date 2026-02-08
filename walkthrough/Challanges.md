@@ -31,9 +31,10 @@ Before you fix this vulnerability exploit the next two challanges
 
 ### Access to internal sysem 
 It’s possible to retrieve AWS information only from localhost. How could an attacker trick the system into exposing this information to the outside world?
+If you work in a real environment (not LocalStack), research and identify other sensitive URLs.
 
 1. Check service health
-   curl http://localhost:4566/\_localstack/health
+   curl http://localhost:4566/\_localstack/health 
 
 2. Get LocalStack info
    curl http://localhost:4566/\_localstack/info
