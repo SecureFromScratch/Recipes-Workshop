@@ -27,7 +27,10 @@ right click on the relevent port, port visibility: public
 cd src/recipes-ui/
 npm start
 ```
-
+4. Take a look at the API using the browser.
+5. Register
+6. Login
+7. Create a recipe
 ---
 
 ### User enumuration
