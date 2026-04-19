@@ -26,6 +26,8 @@ aws --endpoint-url=http://localhost:4566 secretsmanager update-secret \
 aws --endpoint-url=http://localhost:4566 secretsmanager get-secret-value \
   --secret-id recipes/dev/openai
 
+### Start the docker after the codespace in idle
+docker start $(docker ps -aq)
 
  ### Install sqlcmd on your linux host machine
 curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
