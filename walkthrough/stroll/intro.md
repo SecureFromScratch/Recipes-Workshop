@@ -14,13 +14,20 @@ right click on the relevent port, port visibility: public
 
 2. Take a look at the API using the browser. Make sure to add the endpoint "swagger" to the URL
 
-3. Run the client side
+3. Run the BFF
+
+```
+cd src/Recipes.Bff
+dotnet run
+```
+
+4. Run the client side
 ```
 cd src/recipes-ui/
 npm start
 ```
-4. Take a look at the API using the browser.
-5. Register
-6. Login
-7. Create a recipe
+5. Take a look at the API using the browser.
+6. Register
+7. Login
+8. Create a recipe
 ---
