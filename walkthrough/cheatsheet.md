@@ -18,7 +18,9 @@ aws --endpoint-url=http://localhost:4566 secretsmanager create-secret \
   --secret-string "sk-proj-..."
 
 ### upate openapi api secret
-aws --endpoint-url=http://localhost:4566 secretsmanager update-secret --secret-id recipes/dev/openai --secret-string 
+aws --endpoint-url=http://localhost:4566 secretsmanager update-secret \
+    --secret-id recipes/dev/openai \
+    --secret-string "sk-the-real-key"
 
 ### Get the secret value
 aws --endpoint-url=http://localhost:4566 secretsmanager get-secret-value \
