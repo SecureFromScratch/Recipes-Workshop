@@ -20,6 +20,8 @@ dotnet run
 In Github Codespaces version, Make sure the port exposed in Public by click the Make public button, or by going to the ports tab,
 right click on the relevent port, port visibility: public
 
+Take a look at the API using the browser. Make sure to add the endpoint "swagger" to the URL
+
 
 ---
 
