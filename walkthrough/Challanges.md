@@ -24,7 +24,7 @@ What can you do to prevent it?
 
 ### Approve the Recipe
 
-When creating a new recipe, its status is set to **Draft**. Only an administrator should be able to change a recipe from **Draft** to **Published**, but the system is vulnerable.
+When creating a new recipe, its status is set to **Draft**. Only a site super administrator should be able to change a recipe from **Draft** to **Published**, but the system is vulnerable.
 A user can manipulate the process to get their recipe approved. Can you figure out how?
 Before you fix this vulnerability exploit the next two challanges
 
