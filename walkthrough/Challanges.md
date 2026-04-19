@@ -61,7 +61,7 @@ It's possible to overwrite an important system file, which can cause a denial of
 ---
 
 
-### Create a Recipe in Someone Else’s Name
+### Create a Recipe in Someone Else’s Name (not available in codespace)
 
 One scenario is when an attacker can host a page on the same domain.
 Another scenario is when the page is hosted on a different domain.
@@ -75,7 +75,7 @@ Before fixing the vulnerability process to the next challange.
 
 ---
 
-### Login with Attacker credentails
+### Login with Attacker credentails (not available in codespace)
 
 A hacker can trick the user into logging in under the hacker’s identity. Later, the user might provide sensitive information that the hacker will be able to access.
 In this exercise, prepare an HTML page that runs from `http://localhost:8888` and demonstrates how the user can be tricked into logging in.
