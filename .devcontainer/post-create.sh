@@ -69,8 +69,8 @@ done
 
 # Step 5: Configure AWS CLI
 print_step "Configuring AWS CLI for LocalStack..."
-aws configure set aws_access_key_id localstack
-aws configure set aws_secret_access_key localstack
+aws configure set aws_access_key_id test
+aws configure set aws_secret_access_key test
 aws configure set default.region us-east-1
 print_success "AWS CLI configured"
 
@@ -95,6 +95,12 @@ aws --endpoint-url=http://localhost:4566 secretsmanager create-secret \
     --secret-string '{"Secret":"ThisIsAStrongJwtSecretKey1234567","Issuer":"recipes-api","Audience":"recipes-client"}' \
     > /dev/null 2>&1 || true
 print_success "Created secret: recipes/dev/jwt-config"
+
+aws --endpoint-url=http://localhost:4566 secretsmanager create-secret \
+    --name recipes/dev/openai \
+    --secret-string "sk-placeholder" \
+    > /dev/null 2>&1 || true
+print_success "Created secret: recipes/dev/openai"
 
 # Step 7: Install .NET packages
 print_step "Installing NuGet packages (this may take 2-3 minutes)..."

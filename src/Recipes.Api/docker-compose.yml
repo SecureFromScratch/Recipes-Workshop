@@ -18,7 +18,7 @@ services:
       - recipes-net
 
   localstack:
-    image: localstack/localstack:latest
+    image: localstack/localstack:3
     container_name: recipes-localstack
     restart: unless-stopped
     environment:
