@@ -23,7 +23,8 @@ After the installation, go to the [challanges](walkthrough/Challanges.md)
 
 6. Wait 5 minutes while environment sets up
 
-7. When you see "✅ SETUP COMPLETE!" → You're ready!
+7. When you see "Workspace ready! Press F5 to start debugging or run: cd src/Recipes.Api && dotnet run" → You're ready!
+
 
 #### Shut down
 GitHub Codespaces usage is limited. There are only a few dozen hours available per user each month.
