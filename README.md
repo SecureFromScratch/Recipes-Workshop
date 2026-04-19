@@ -25,7 +25,10 @@ After the installation, go to the [challanges](walkthrough/Challanges.md)
 
 7. When you see "✅ SETUP COMPLETE!" → You're ready!
 
----
+#### Shut down
+GitHub Codespaces usage is limited. There are only a few dozen hours available per user each month.
+Therefore, it is important to delete the environment after you finish using it. Otherwise, you may waste your remaining available hours.
+To delete the environment, go to the **Codespaces** tab, click the **three dots** next to the Codespace, and choose **Delete**.
 
 ### Option 2: VS Code DevContainer (Local-Container)
 
