@@ -254,7 +254,7 @@ python3 -m http.server 8888
 **4. Execute the Attack**
 ```
 In the same browser (where you're logged in):
-1. Navigate to: http://localhost:8888/csrf-attack.html
+1. Navigate to: http://localhost:8888/csrf_create_recipe.html
 2. Watch the page execute the attack
 3. Check http://localhost:4200/recipes
 4. Confirm the malicious recipe was created
