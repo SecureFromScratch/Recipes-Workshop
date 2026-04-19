@@ -71,7 +71,7 @@ A developer cannot set `SameSite=None` without also setting `Secure=true`, becau
 
 So for this discussion, stick to the scenario where the attacker can host a page on the same domain.
 
-Before the fixing the vulnerability process to the next challange.
+Before fixing the vulnerability process to the next challange.
 
 ---
 
