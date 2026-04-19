@@ -17,7 +17,7 @@ Run the api:
 cd src/Recipes.Api
 dotnet run
 ```
-Make sure the port exposed in Public by click the Make public button, or ny going to the ports tab,
+In Github Codespaces version, Make sure the port exposed in Public by click the Make public button, or ny going to the ports tab,
 right click on the relevent port, port visibility: public
 
 
