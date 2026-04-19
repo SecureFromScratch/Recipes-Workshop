@@ -27,7 +27,35 @@ aws --endpoint-url=http://localhost:4566 secretsmanager get-secret-value \
   --secret-id recipes/dev/openai
 
 ### Start the docker after the codespace in idle
+```
 docker start $(docker ps -aq)
+```
+and repeat step 6 in the post create script
+```
+aws --endpoint-url=http://localhost:4566 secretsmanager create-secret \
+    --name recipes/dev/sa-password \
+    --secret-string "StrongP4ssword123" \
+    > /dev/null 2>&1 || true
+
+
+aws --endpoint-url=http://localhost:4566 secretsmanager create-secret \
+    --name recipes/dev/app-db-connection \
+    --secret-string "Server=localhost,14333;Database=Recipes;User Id=recipes_app;Password=StrongP4ssword123;TrustServerCertificate=true;" \
+    > /dev/null 2>&1 || true
+
+
+aws --endpoint-url=http://localhost:4566 secretsmanager create-secret \
+    --name recipes/dev/jwt-config \
+    --secret-string '{"Secret":"ThisIsAStrongJwtSecretKey1234567","Issuer":"recipes-api","Audience":"recipes-client"}' \
+    > /dev/null 2>&1 || true
+
+
+aws --endpoint-url=http://localhost:4566 secretsmanager create-secret \
+    --name recipes/dev/openai \
+    --secret-string "sk-placeholder" \
+    > /dev/null 2>&1 || true
+
+```
 
  ### Install sqlcmd on your linux host machine
 curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
