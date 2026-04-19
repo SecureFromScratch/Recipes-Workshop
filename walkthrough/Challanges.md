@@ -11,6 +11,13 @@ Your goal is to exploit them, fix them and verify.
 
 Before trying any tricks or fixes, take a deep breath and explore the application as a normal user. Register, log in, and add a few recipes to understand the expected flow. Make sure you understand the [BFF](../more_info/1_intro_to_bff.md) architecture and how the frontend and backend interact. Also, pay close attention to how the first user is registered.
 
+Run the api. 
+
+```
+cd src/Recipes.Api
+dotnet run
+```
+   
 ---
 
 ### User enumuration
