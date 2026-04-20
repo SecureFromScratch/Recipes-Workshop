@@ -1,6 +1,6 @@
 # Welcome to Hacking The Recipes!
 
-After the installation, go to the [challanges](walkthrough/Challanges.md)
+After the installation, go to the [challenges](walkthrough/Challanges.md)
 ![The Client GUI](images/lab.png)
 
 ## Quick Start Options
