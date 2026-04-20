@@ -14,7 +14,7 @@ Click for  [detailed instructions](stroll/intro.md)
 
 ---
 
-### User enumuration
+### User enumeration
 
 An attacker can determine whether a user exists in the system or not.
 Write a program that demonstrates how this user-enumeration vulnerability can be exploited.
