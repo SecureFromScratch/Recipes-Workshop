@@ -30,7 +30,7 @@ Before you fix this vulnerability exploit the next two challanges
 
 ---
 
-### Access to internal sysem 
+### Access to internal systsem 
 It’s possible to retrieve AWS information only from localhost. How could an attacker trick the system into exposing this information to the outside world?
 If you work in a real environment (not LocalStack), research and identify other sensitive URLs.
 
